@@ -12,7 +12,6 @@ services:
       - node.name=odfe-node1
       - cluster.name=odfe-cluster
       - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
-#      - opendistro_security.ssl.http.enabled=false
       - "ES_JAVA_OPTS=-Xms4g -Xmx4g"
       - cluster.initial_master_nodes=odfe-node1
       - discovery.seed_hosts=odfe-node1
@@ -25,13 +24,6 @@ services:
         hard: 65536
     volumes:
       - ./odfe-data1:/usr/share/elasticsearch/data
-      #- ./root-ca.pem:/usr/share/elasticsearch/config/root-ca.pem
-      #- ./esnode.pem:/usr/share/elasticsearch/config/esnode.pem
-      #- ./esnode-key.pem:/usr/share/elasticsearch/config/esnode-key.pem
-      #- ./kirk.pem:/usr/share/elasticsearch/config/kirk.pem
-      #- ./kirk-key.pem:/usr/share/elasticsearch/config/kirk-key.pem
-      #- ./custom-elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      #- ./internal_users.yml:/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml
     ports:
       - "9200:9200"
     networks:
@@ -45,35 +37,19 @@ services:
       - "5601"
     environment:
       ELASTICSEARCH_HOSTS: https://odfe-node1:9200
-      #volumes:
-      #- ./custom-kibana.yml:/usr/share/kibana/config/kibana.yml
     networks:
       - odfe-net
-#  logstash:
-#    image: docker.elastic.co/logstash/logstash-oss:${ELK_VERSION}
-#    container_name: logstash
-#    volumes:
-#      - .logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-#    ports:
-#      - "5044:5044"
-#    networks:
-#      - odfe-net
-#    depends_on:
-#      - odfe-node1
   metricbeat:
-    image: docker.elastic.co/beats/metricbeat:${ELK_VERSION}
+    image: docker.elastic.co/beats/metricbeat-oss:${ELK_VERSION}
     container_name: metricbeat-node
     networks:
       - odfe-net
     volumes:
       - ./metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
     environment:
-      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST:-node1}
-      - KIBANA_HOST=${KIBANA_HOST:-node1}
-      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME:-elastic}
-      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD:-changeme}
-    # disable strict permission checks
-    command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+      - ELASTICSEARCH_HOST=odfe-node1
+      - ELASTICSEARCH_USERNAME=admin
+      - ELASTICSEARCH_PASSWORD=admin
 
 volumes:
   odfe-data1:

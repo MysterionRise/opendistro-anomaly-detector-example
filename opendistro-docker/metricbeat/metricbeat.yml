@@ -82,6 +82,11 @@ output.elasticsearch:
 #  index: "metricbeat-%{[agent.version]}-%{+yyyy.MM.dd}"
   username: "admin"
   password: "admin"
+  ssl.verification_mode: "none"
 #  ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
 #  ssl.certificate: "/etc/pki/client/cert.pem"
 #  ssl.key: "/etc/pki/client/cert.key"
+
+# workaround for a recent bug
+setup.ilm.enabled: false
+
