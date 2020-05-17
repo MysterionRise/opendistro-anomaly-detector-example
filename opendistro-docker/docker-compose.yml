@@ -3,8 +3,8 @@ services:
   odfe-node1:
     build:
       context: .
+      dockerfile: ODFEDockerfile
       args:
-        ELK_VERSION: ${ELK_VERSION}
         OPEN_DISTRO_VERSION: ${OPEN_DISTRO_VERSION}
     image: odfe:${OPEN_DISTRO_VERSION}
     container_name: odfe-node1
@@ -29,6 +29,11 @@ services:
     networks:
       - odfe-net
   kibana:
+    build:
+      context: .
+      dockerfile: KibanaDockerfile
+      args:
+        OPEN_DISTRO_VERSION: ${OPEN_DISTRO_VERSION}
     image: amazon/opendistro-for-elasticsearch-kibana:${OPEN_DISTRO_VERSION}
     container_name: odfe-kibana
     ports:

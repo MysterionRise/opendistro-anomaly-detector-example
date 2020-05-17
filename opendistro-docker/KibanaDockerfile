@@ -1,0 +1,5 @@
+ARG OPEN_DISTRO_VERSION
+
+FROM amazon/opendistro-for-elasticsearch:$OPEN_DISTRO_VERSION
+
+RUN /usr/share/elasticsearch/bin/kibana-plugin install --batch opendistro-anomaly-detection
