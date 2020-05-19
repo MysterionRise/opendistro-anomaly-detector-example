@@ -2,4 +2,7 @@ ARG OPEN_DISTRO_VERSION
 
 FROM amazon/opendistro-for-elasticsearch:$OPEN_DISTRO_VERSION
 
-RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install opendistro-anomaly-detection
+COPY lib/opendistro-anomaly-detection-1.7.0.0.zip /tmp/opendistro-anomaly-detection-1.7.0.0.zip
+
+RUN /usr/share/elasticsearch/bin/elasticsearch-plugin remove opendistro-anomaly-detection
+RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install --batch file:///tmp/opendistro-anomaly-detection-1.7.0.0.zip

@@ -6,7 +6,7 @@ services:
       dockerfile: ODFEDockerfile
       args:
         OPEN_DISTRO_VERSION: ${OPEN_DISTRO_VERSION}
-    image: odfe:${OPEN_DISTRO_VERSION}
+    # image: odfe:${OPEN_DISTRO_VERSION}
     container_name: odfe-node1
     environment:
       - node.name=odfe-node1
@@ -29,11 +29,11 @@ services:
     networks:
       - odfe-net
   kibana:
-    build:
-      context: .
-      dockerfile: KibanaDockerfile
-      args:
-        OPEN_DISTRO_VERSION: ${OPEN_DISTRO_VERSION}
+    # build:
+      # context: .
+      # dockerfile: KibanaDockerfile
+      # args:
+        # OPEN_DISTRO_VERSION: ${OPEN_DISTRO_VERSION}
     image: amazon/opendistro-for-elasticsearch-kibana:${OPEN_DISTRO_VERSION}
     container_name: odfe-kibana
     ports:
@@ -41,6 +41,7 @@ services:
     expose:
       - "5601"
     environment:
+      ELASTICSEARCH_URL: https://odfe-node1:9200
       ELASTICSEARCH_HOSTS: https://odfe-node1:9200
     networks:
       - odfe-net
