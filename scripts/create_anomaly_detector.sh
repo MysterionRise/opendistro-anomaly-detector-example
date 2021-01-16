@@ -46,6 +46,3 @@ POST _opendistro/_anomaly_detection/detectors
     }
   }
 }
-
-
-GET _opendistro/_anomaly_detection/detectors/results/_search
